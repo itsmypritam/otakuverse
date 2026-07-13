@@ -1,0 +1,25 @@
+backend/src/main.ts
+  s_ce64eb0105a79b::t_195c8be0f42c5f 11-14
+render.yaml
+  s_ce64eb0105a79b::t_e25c9f3337c089 6,12,14
+frontend/.gitignore
+  s_ce64eb0105a79b::t_5b387756c590b0 26-27
+backend/package-lock.json
+  s_ce64eb0105a79b::t_b37135b8093ec7 2103-2104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "834f134e62097a69df2c613e4c0804f9fc205df4",
+  "prompts": {},
+  "sessions": {
+    "s_ce64eb0105a79b": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0a424e455ffefJPh5YLRvRV8AZ",
+        "model": "unknown"
+      },
+      "human_author": "pritamscodee <codewithpritam29@gmail.com>"
+    }
+  }
+}
