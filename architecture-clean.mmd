@@ -1,0 +1,125 @@
+graph TB
+    subgraph User["End User"]
+        U["Browser"]
+    end
+
+    subgraph Frontend["Frontend - React 19 + Vite :5173"]
+        subgraph Pages["Pages"]
+            HP["Home - Trending / Airing / Upcoming"]
+            BD["Browse - Filters + Search + Pagination"]
+            AD["Anime Detail - Info / Characters / Watchlist"]
+            SR["Search Results - Grid"]
+            WL["Watchlist - localStorage"]
+            WP["Watch - Full-screen Player"]
+        end
+
+        subgraph Hooks["Custom Hooks"]
+            H1["useAniListTrending"]
+            H2["useAniListTop"]
+            H3["useAniListAiring"]
+            H4["useAniListSearch"]
+            H5["useAniListMedia"]
+            H6["useResolveSlug"]
+            H7["useConsumetEpisodes"]
+            H8["useConsumetWatch"]
+        end
+
+        subgraph Components["UI Components"]
+            VP["VideoPlayer - video.js + HLS"]
+            UI["UI Kit - Button / Badge / Card / Input / Avatar"]
+        end
+
+        subgraph State["State Management"]
+            LS["localStorage - Watchlist"]
+            UP["URL Params - Search / Route"]
+            RE["React State - useState + useEffect"]
+        end
+    end
+
+    subgraph Backend["Backend - NestJS 11 :4000"]
+        subgraph AniListMod["AniList Module"]
+            AC["AniListController"]
+            AS["AniListService - GraphQL Client"]
+        end
+
+        subgraph StreamMod["Stream Module"]
+            SC["StreamController - M3U8 Proxy - Segment Proxy"]
+        end
+
+        subgraph PrismaMod["Prisma Module - Global"]
+            PS["PrismaService - PrismaClient"]
+        end
+
+        subgraph Routes["API Routes"]
+            R1["GET /api/anilist/trending"]
+            R2["GET /api/anilist/top"]
+            R3["GET /api/anilist/airing"]
+            R4["GET /api/anilist/search"]
+            R5["GET /api/anilist/media/:id"]
+            R6["GET /api/stream/search"]
+            R7["GET /api/stream/info"]
+            R8["GET /api/stream/watch"]
+            R9["GET /api/stream/m3u8"]
+            R10["GET /api/stream/segment"]
+        end
+    end
+
+    subgraph Database["Database"]
+        PG["PostgreSQL - Neon Serverless"]
+    end
+
+    subgraph External["External Services"]
+        AL["AniList GraphQL API - graphql.anilist.co"]
+        CN["Consumet API - kawai.digiti.tech"]
+        CDN["Video CDN - HLS .ts Segments"]
+    end
+
+    U -->|"HTTP :5173"| Frontend
+
+    HP --> H1
+    HP --> H3
+    BD --> H1
+    BD --> H2
+    BD --> H6
+    AD --> H5
+    AD --> H6
+    SR --> H4
+    WP --> H5
+    WP --> H6
+    WP --> H7
+    WP --> H8
+    WP --> VP
+
+    H1 -->|"GET /api/anilist/trending"| R1
+    H2 -->|"GET /api/anilist/top"| R2
+    H3 -->|"GET /api/anilist/airing"| R3
+    H4 -->|"GET /api/anilist/search"| R4
+    H5 -->|"GET /api/anilist/media/:id"| R5
+    H6 -->|"GET /api/stream/search"| R6
+    H7 -->|"GET /api/stream/info"| R7
+    H8 -->|"GET /api/stream/watch"| R8
+
+    VP -->|"M3U8 Master Playlist"| R9
+    VP -->|".ts Segment Requests"| R10
+
+    AC --> AS
+    R1 --> AC
+    R2 --> AC
+    R3 --> AC
+    R4 --> AC
+    R5 --> AC
+    R6 --> SC
+    R7 --> SC
+    R8 --> SC
+    R9 --> SC
+    R10 --> SC
+    AniListMod --> PrismaMod
+    StreamMod --> PrismaMod
+
+    PS -->|"Prisma ORM"| PG
+
+    AS -->|"GraphQL POST - Anime metadata"| AL
+    SC -->|"REST GET - Search/Info/Watch"| CN
+    SC -->|"Fetch streams - Rewrite M3U8 URLs"| CDN
+
+    CDN -->|"Stream .ts binary"| SC

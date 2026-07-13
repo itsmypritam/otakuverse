@@ -1,0 +1,141 @@
+graph TB
+    subgraph User["👤 End User"]
+        U[Browser]
+    end
+
+    subgraph Frontend["⚛️ Frontend - React 19 + Vite :5173"]
+        direction TB
+        subgraph Pages["Pages"]
+            HP["🏠 Home\nTrending / Airing / Upcoming"]
+            BD["🔍 Browse\nFilters + Search + Pagination"]
+            AD["📋 Anime Detail\nInfo / Characters / Watchlist"]
+            SR["🔎 Search Results\nGrid"]
+            WL["📑 Watchlist\nlocalStorage"]
+            WP["▶️ Watch\nFull-screen Player"]
+        end
+
+        subgraph Hooks["Custom Hooks"]
+            H1["useAniListTrending"]
+            H2["useAniListTop"]
+            H3["useAniListAiring"]
+            H4["useAniListSearch"]
+            H5["useAniListMedia"]
+            H6["useResolveSlug"]
+            H7["useConsumetEpisodes"]
+            H8["useConsumetWatch"]
+        end
+
+        subgraph Components["UI Components"]
+            VP["🎬 VideoPlayer\nvideo.js + HLS"]
+            UI["🎨 UI Kit\nButton / Badge / Card\nInput / Avatar / Separator"]
+        end
+
+        subgraph State["State Management"]
+            LS["localStorage\nWatchlist"]
+            URL["URL Params\nSearch / Route"]
+            RE["React State\nuseState + useEffect"]
+        end
+    end
+
+    subgraph Backend["🖥️ Backend - NestJS 11 :4000"]
+        direction TB
+
+        subgraph AniListMod["AniList Module"]
+            AC["AniListController"]
+            AS["AniListService\nGraphQL Client"]
+        end
+
+        subgraph StreamMod["Stream Module"]
+            SC["StreamController\nM3U8 Proxy\nSegment Proxy"]
+        end
+
+        subgraph PrismaMod["Prisma Module (Global)"]
+            PS["PrismaService\nPrismaClient"]
+        end
+
+        subgraph Routes["API Routes"]
+            R1["GET /api/anilist/trending"]
+            R2["GET /api/anilist/top"]
+            R3["GET /api/anilist/airing"]
+            R4["GET /api/anilist/search"]
+            R5["GET /api/anilist/media/:id"]
+            R6["GET /api/stream/search"]
+            R7["GET /api/stream/info"]
+            R8["GET /api/stream/watch"]
+            R9["GET /api/stream/m3u8?url="]
+            R10["GET /api/stream/segment?url="]
+        end
+    end
+
+    subgraph Database["🗄️ Database"]
+        PG["PostgreSQL\nNeon Serverless\n(No models yet)"]
+    end
+
+    subgraph External["☁️ External Services"]
+        AL["AniList GraphQL API\ngraphql.anilist.co\nAnime Metadata"]
+        CN["Consumet API\nkawai.digiti.tech\nStream Sources"]
+        CDN["Video CDN\nHLS .ts Segments\nM3U8 Playlists"]
+    end
+
+    %% User -> Frontend
+    U -->|"HTTP :5173"| Frontend
+
+    %% Pages -> Hooks
+    HP --> H1
+    HP --> H3
+    BD --> H1
+    BD --> H2
+    BD --> H6
+    AD --> H5
+    AD --> H6
+    SR --> H4
+    WP --> H5
+    WP --> H6
+    WP --> H7
+    WP --> H8
+    WP --> VP
+
+    %% Hooks -> Backend
+    H1 -->|"GET /api/anilist/trending"| R1
+    H2 -->|"GET /api/anilist/top"| R2
+    H3 -->|"GET /api/anilist/airing"| R3
+    H4 -->|"GET /api/anilist/search"| R4
+    H5 -->|"GET /api/anilist/media/:id"| R5
+    H6 -->|"GET /api/stream/search"| R6
+    H7 -->|"GET /api/stream/info"| R7
+    H8 -->|"GET /api/stream/watch"| R8
+
+    %% Video Player -> Stream Proxy
+    VP -->|"M3U8 Master Playlist"| R9
+    VP -->|".ts Segment Requests"| R10
+
+    %% Backend Modules
+    AC --> AS
+    R1 & R2 & R3 & R4 & R5 --> AC
+    R6 & R7 & R8 & R9 & R10 --> SC
+    AniListMod --> PrismaMod
+    StreamMod --> PrismaMod
+
+    %% Prisma -> Database
+    PS -->|"Prisma ORM"| PG
+
+    %% Backend -> External APIs
+    AS -->|"GraphQL POST\nAnime metadata"| AL
+    SC -->|"REST GET\nSearch/Info/Watch"| CN
+    SC -->|"Fetch streams\nRewrite M3U8 URLs"| CDN
+
+    %% CDN -> Backend (stream segments back)
+    CDN -->|"Stream .ts binary"| SC
+
+    %% Styles
+    classDef frontend fill:#1e40af,stroke:#3b82f6,color:#fff
+    classDef backend fill:#166534,stroke:#22c55e,color:#fff
+    classDef database fill:#7c3aed,stroke:#a78bfa,color:#fff
+    classDef external fill:#c2410c,stroke:#fb923c,color:#fff
+    classDef user fill:#be123c,stroke:#fb7185,color:#fff
+
+    class U user
+    class HP,BD,AD,SR,WL,WP,VP,UI,LS,URL,RE frontend
+    class AC,AS,SC,PS,R1,R2,R3,R4,R5,R6,R7,R8,R9,R10 backend
+    class PG database
+    class AL,CDN external
