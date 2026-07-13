@@ -1,0 +1,8 @@
+app:
+  - name: otakuverse
+    src: frontend
+    build:
+      cmd: npm install && npm run build
+    env:
+      - key: VITE_API_URL
+        value: https://otakuverse-api.onrender.com/api
