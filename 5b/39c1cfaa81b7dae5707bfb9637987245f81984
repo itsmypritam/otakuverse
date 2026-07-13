@@ -1,0 +1,24 @@
+backend/fly.toml
+  s_ce64eb0105a79b::t_0672d3c8cb200f 15
+  s_ce64eb0105a79b::t_299418e4c67dc8 7
+  s_ce64eb0105a79b::t_a4977a082b708d 1-6,8-14,16-19
+backend/Dockerfile
+  s_ce64eb0105a79b::t_c4f18809883a3e 1-15,17
+  s_ce64eb0105a79b::t_aad206bdfc6966 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "5b39c1cfaa81b7dae5707bfb9637987245f81984",
+  "prompts": {},
+  "sessions": {
+    "s_ce64eb0105a79b": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0a424e455ffefJPh5YLRvRV8AZ",
+        "model": "unknown"
+      },
+      "human_author": "pritamscodee <codewithpritam29@gmail.com>"
+    }
+  }
+}
