@@ -3,6 +3,11 @@ app:
     src: frontend
     build:
       cmd: npm install && npm run build
+      output: dist
     env:
       - key: VITE_API_URL
-        value: https://otakuverse-api.onrender.com/api
+        value: https://otakuverse-api-egoj.onrender.com/api
+    redirects:
+      - from: /*
+        to: /index.html
+        type: filesystem
