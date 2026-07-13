@@ -1,0 +1,19 @@
+stormkit.config.yml
+  s_ce64eb0105a79b::t_c1fa4bcafa55c9 1-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "68acf62845628592f03e736dab2fbfa3ab9020a1",
+  "prompts": {},
+  "sessions": {
+    "s_ce64eb0105a79b": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0a424e455ffefJPh5YLRvRV8AZ",
+        "model": "unknown"
+      },
+      "human_author": "pritamscodee <codewithpritam29@gmail.com>"
+    }
+  }
+}
