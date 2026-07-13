@@ -1,0 +1,21 @@
+frontend/.env.production
+  s_ce64eb0105a79b::t_5ecdce0fa831c2 1
+backend/src/main.ts
+  s_ce64eb0105a79b::t_4c8fc3e9dec8d1 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "2b01939e71ae9f78b604f971da153531ce8082b6",
+  "prompts": {},
+  "sessions": {
+    "s_ce64eb0105a79b": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0a424e455ffefJPh5YLRvRV8AZ",
+        "model": "unknown"
+      },
+      "human_author": "pritamscodee <codewithpritam29@gmail.com>"
+    }
+  }
+}
